@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="#">
+    
+    <title>Snake Game</title>
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=New+Tegomin&family=Roboto&display=swap');
+        *{
+            margin: 0px;
+            padding: 0px;
+            font-family: 'Roboto', sans-serif;            
+        }
+        #board{
+            display: grid;
+            grid-template-rows: repeat(20, 1fr);
+            grid-template-columns: repeat(20, 1fr);
+        }
+        .head{
+            background: linear-gradient(rgb(202, 0, 0), yellow);
+            border: 3px solid purple;
+            transform: scale(1.02);
+            border-radius: 7px;
+        }
+        .body{
+            background: linear-gradient(yellow, green);
+            border: 2px solid black;
+            border-radius: 12px;
+        }
+        .food{
+            background: linear-gradient(red, purple);
+            border: 2px solid black;
+            border-radius: 16px;
+        }
+        @media (max-width: 400px) {
+            #logo{
+                display: none;
+            }
+            #title{
+                font-size: larger;
+            }
+            body{
+                background: rgb(30, 168, 46);
+            }
+        }
+        @media ((min-width: 401px) and (max-width: 767px)) {
+            body{
+                background: rgb(30, 168, 46);
+            }
+        }
+        #Scorebox div{
+            font-family: 'New Tegomin', serif;
+        }
+        </style>
+  <link rel="stylesheet" href="/assets/index-5d0e2fbf.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="bg-gradient-to-r from-yellow-950 via-yellow-700 to-yellow-950 text-white h-[7vh] flex items-center justify-between shadow-2xl rounded-b-3xl mx-1 sticky top-0">
+        <div class="hamburger ml-[3%] p-1 inline-block cursor-pointer border-2 border-white rounded-lg md:hidden" onclick="ToggleMenu()">
+            <div class="line h-0.5 w-6 bg-white my-1"></div>
+            <div class="line h-0.5 w-6 bg-white my-1"></div>
+            <div class="line h-0.5 w-6 bg-white my-1"></div>
+        </div>
+        <div class="flex pl-[5%] cursor-pointer space-x-4">
+            <div id="title" class="text-3xl font-semibold">Snake Game</div>
+            <img id="logo" class="w-9 invert" src="/assets/snakeLogo-b61bab94.png" alt="">
+        </div>
+        </ul>
+        <div id="menu" class="items-center md:space-x-4 mr-[2%] text-2xl bg-yellow-900 md:bg-transparent md:text-lg absolute md:static top-16 md:flex w-[42%] md:w-auto rounded-tr-2xl rounded-br-2xl md:-translate-x-0" hidden>
+            <div class="md:hover:underline md:hover:underline-offset-4 cursor-pointer border-2 border-white md:border-none rounded-tr-2xl" onclick="ToggleMenu()">Home</div>
+            <div class="md:hover:underline md:hover:underline-offset-4 cursor-pointer border-2 border-white md:border-none" onclick="ToggleMenu()">Game Rules</div>
+            <div class="md:hover:underline md:hover:underline-offset-4 cursor-pointer border-2 border-white md:border-none" onclick="ToggleMenu()">Practice</div>
+            <div class="md:hover:underline md:hover:underline-offset-4 cursor-pointer border-2 border-white md:border-none rounded-br-2xl" onclick="ToggleMenu()">About Us</div>
+        </div>
+        
+        <div class="flex mr-[5%] items-center space-x-2">
+            <div class="text-lg hover:underline cursor-pointer hidden md:inline-block">Sign in</div>
+            <div class="w-8 border-2 border-white rounded-full p-1 cursor-pointer"><img class="invert" src="/assets/login-76eae07b.svg" alt="Err"></div>
+        </div>
+    </nav>
+    <img class="md:w-[100vw] md:h-[100vh] absolute top-0 -z-10 bg-no-repeat hidden md:block" id="bg" src="/assets/SnakeBackground-fbd888b7.jpg" alt="Error">
+
+    <div id="Scorebox" class="flex md:block md:absolute md:top-20 md:right-[1vw] xl:right-[4vw] md:text-1xl xl:text-2xl font-semibold md:space-y-4 space-x-6 md:space-x-0 text-lg w-max mx-auto mt-[5%] md:mt-[0%]">
+        <div id="HighScore">HighScore: 0</div>
+        <div id="Score">Score: 0</div>
+    </div>
+
+    <div class="Body flex justify-center md:mt-[0%] items-center md:h-[93vh] ">
+        <div id="gameover" class="text-[0px] absolute md:text-[2.8vw] md:text-3xl font-semibold text-yellow-900 text-center z-20" hidden>Game Over!<br>Press Enter or Space to play again</div>
+        <div id="gameover2" class="md:text-[0px] absolute text-[4.8vw] font-semibold text-yellow-900 text-center z-20" hidden>Game Over!<br>click anywhere to start again</div>
+        <div id="board" class="bg-gradient-to-b from-yellow-300 via-lime-200 to-green-300 md:w-[85vmin] md:h-[85vmin] w-[95vmin] h-[95vmin] border-4 border-yellow-900">
+        </div>
+    </div>
+
+    <div class="buttons grid grid-cols-3 grid-rows-3 h-32 w-32 md:hidden mx-auto m-6">
+        <div></div>
+        <div id="up" class="border-black bg-red-400 focus:bg-red-500 active:bg-red-600 border-2"><img class="w-full -rotate-90" src="/assets/arrow-266867b8.png" alt=""></div>
+        <div></div>
+        <div id="left" class="border-black bg-red-400 focus:bg-red-500 active:bg-red-600 border-2"><img class="w-full rotate-180" src="/assets/arrow-266867b8.png" alt=""></div>
+        <div></div>
+        <div id="right" class="border-black bg-red-400 focus:bg-red-500 active:bg-red-600 border-2"><img class="w-full" src="/assets/arrow-266867b8.png" alt=""></div>
+        <div></div>
+        <div id="down" class="border-black bg-red-400 focus:bg-red-500 active:bg-red-600 border-2"><img class="w-full rotate-90" src="/assets/arrow-266867b8.png" alt=""></div>
+        <div></div>
+    </div>
+
+</body>
+
+<script>
+    // toggle hamburger
+function ToggleMenu(){
+    setTimeout(()=>{
+        let menu = document.getElementById('menu');
+        if(menu.hasAttribute('hidden')){
+            menu.removeAttribute('hidden');
+        }
+        else{
+            menu.setAttribute('hidden', true);
+        }
+    },150);
+    
+}
+
+// Game Constants & variables
+let inputDir = {x: 0, y: 0};
+const foodSound = new Audio("/assets/eating sound.mp3");
+const gameOverSound = new Audio("/assets/gameover.mp3");
+const moveSound = new Audio("/assets/blip.mp3");
+const backgroundSound = new Audio("/assets/background.mp3");
+backgroundSound.play();
+setInterval(()=>{
+    backgroundSound.play();
+}, 44000);
+let resolved = false;
+let playgameOver = true;
+const speed = 5;
+let score = 0;
+let highscore = 0;
+let lastPaintTime = 0;
+let SnakeArr = [
+    {x: 10, y: 10},
+
+]
+let food = {x: 5, y: 5};
+
+//Game functions
+function main(currentTime){ 
+    window.requestAnimationFrame(main);
+    if((currentTime - lastPaintTime)/1000 < 1/speed){
+        return ;           
+    }                       
+    
+    // console.log(currentTime);
+    lastPaintTime = currentTime; 
+
+    gameEngine();
+}
+
+function isCollide(){
+    for(let i=1; i<SnakeArr.length; i++){
+        //if snake bump into itself
+        if(SnakeArr[i].x == SnakeArr[0].x && SnakeArr[i].y == SnakeArr[0].y){
+            return true;
+        }
+
+    }
+    //if snake bump into wall
+    if(SnakeArr[0].x >= 21 || SnakeArr[0].x <= 0 || SnakeArr[0].y >= 21 || SnakeArr[0].y <= 0){
+        return true;
+    }
+    return false;
+}
+
+async function gameEngine(){
+    //Part 1 (updating the snake array & food)
+    if(isCollide()){
+        backgroundSound.pause();
+
+        //To play gameover audio only 1 time
+        gameoverS();
+        function gameoverS(){
+            if(playgameOver){
+                gameOverSound.play(); 
+                playgameOver = false;
+            }
+        }
+        gameover.removeAttribute("hidden");
+        gameover2.removeAttribute("hidden");
+
+        //To stop execution of javascript
+        resolved = false;
+        await new Promise((resolve, reject)=>{
+            let a = setInterval(()=>{
+                if(resolved){
+                    resolve();
+                    clearInterval(a);
+                }
+            }, 100);
+        });
+        gameover.setAttribute("hidden", true);
+        gameover2.setAttribute("hidden", true);
+    
+        // alert('Game over. Press any key to play again');
+
+        // resetting all values
+        inputDir = {x:0, y:0};
+        SnakeArr = [
+            {x:10, y:10},
+        ];
+        food = {x:5, y:5};
+        backgroundSound.play();
+        playgameOver = true;
+        score = 0;
+        Score.innerHTML = `Score: 0`;
+    }
+
+    // if snake ate the food
+    if(SnakeArr[0].y == food.y && SnakeArr[0].x == food.x){
+        SnakeArr.unshift({x: SnakeArr[0].x + inputDir.x, y: SnakeArr[0].y + inputDir.y}); 
+        foodSound.play();                                                              
+
+        //setting score and highscore
+        score++;
+        Score.innerHTML = `Score: ${score}`;
+        if(score>highscore){
+            highscore = score;
+            localStorage.setItem("highscore", JSON.stringify(highscore));
+            document.getElementById('HighScore').innerHTML =  `HighScore: ` + highscore;
+        }
+
+        let a = 2;
+        let b = 19;
+        food = {x: Math.round(a + (b-a)*Math.random()), y: Math.round(a + (b-a)*Math.random())};
+
+        //correct position for food
+        while(true){
+            let foodwrong = false;
+            for(let i=0; i<SnakeArr.length; i++){
+                if(food.x == SnakeArr[i].x && food.y == SnakeArr[i].y){
+                    foodwrong = true;
+                    break;
+                }
+            }
+            if(foodwrong){
+                food = {x: Math.round(a + (b-a)*Math.random()), y: Math.round(a + (b-a)*Math.random())};
+            }
+            else{
+                break;
+            }
+        }
+    }
+
+    //Moving the snake
+    for(let i = SnakeArr.length - 2; i>=0; i--){
+        SnakeArr[i+1] = {...SnakeArr[i]}; 
+    }                                     
+    SnakeArr[0].x += inputDir.x;        
+    SnakeArr[0].y += inputDir.y;
+
+    //Part 2 (Display the snake and food)
+    //Display the snake
+    board.innerHTML = "";
+    SnakeArr.forEach((e, index)=>{
+        let snakeElement = document.createElement('div');
+        snakeElement.style.gridRowStart = e.y;
+        snakeElement.style.gridColumnStart = e.x;
+        if(index == 0){
+            snakeElement.classList.add("head");
+        }
+        else{
+            snakeElement.classList.add("body");
+        }
+        board.appendChild(snakeElement);
+    });
+
+    //Display the food
+    let foodElement = document.createElement('div');
+    foodElement.style.gridRowStart = food.y;
+    foodElement.style.gridColumnStart = food.x;
+    foodElement.classList.add("food");
+    board.appendChild(foodElement);
+}
+
+
+//Main logic starts here
+
+//setting highscore in local storage
+let highscoreval = localStorage.getItem("highscore");
+if(highscoreval == null){
+    highscore = 0;
+    localStorage.setItem("highscore", JSON.stringify(highscore));
+}
+else{
+    highscore = JSON.parse(highscoreval);
+    document.getElementById('HighScore').innerHTML =  `HighScore: ` + highscoreval;
+}
+
+window.requestAnimationFrame(main); 
+
+window.addEventListener("keydown", e =>{
+    // inputDir = {x:0, y:1}; //start the game
+    moveSound.play() ;
+    switch (e.key) {
+        case 'ArrowUp':
+            inputDir.x = 0;
+            inputDir.y = -1;
+            break;
+
+        case 'ArrowDown':
+            inputDir.x = 0;
+            inputDir.y = 1;
+            break;
+
+        case 'ArrowLeft':
+            inputDir.x = -1;
+            inputDir.y = 0;
+            break;
+
+        case 'ArrowRight':
+            inputDir.x = 1;
+            inputDir.y = 0;
+            break;
+    
+        default:
+            break;
+    }
+});
+
+up.addEventListener("click", function run(){
+    inputDir.x = 0;
+    inputDir.y = -1;
+});
+down.addEventListener("click", function run(){
+    inputDir.x = 0;
+    inputDir.y = 1;
+});
+left.addEventListener("click", function run(){
+    inputDir.x = -1;
+    inputDir.y = 0;
+});
+right.addEventListener("click", function run(){
+    inputDir.x = 1;
+    inputDir.y = 0;
+});
+
+
+// to resolve the gameover promise and play new game
+window.addEventListener("keypress", e =>{
+    if(e.key === "Enter" || e.key === " "){
+        resolved = true;
+    }
+    console.log(e.key);
+});
+
+window.addEventListener("click", ()=>{
+    resolved = true;
+    // console.log(e.key);
+});
+</script>
+
+</html>
