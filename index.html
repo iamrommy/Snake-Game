@@ -55,7 +55,7 @@
             font-family: 'New Tegomin', serif;
         }
         </style>
-  <link rel="stylesheet" href="/assets/index-5d0e2fbf.css">
+  <link rel="stylesheet" href="assets/index-5d0e2fbf.css">
 </head>
 <body>
     <!-- Navbar -->
@@ -67,7 +67,7 @@
         </div>
         <div class="flex pl-[5%] cursor-pointer space-x-4">
             <div id="title" class="text-3xl font-semibold">Snake Game</div>
-            <img id="logo" class="w-9 invert" src="/assets/snakeLogo-b61bab94.png" alt="">
+            <img id="logo" class="w-9 invert" src="assets/snakeLogo-b61bab94.png" alt="">
         </div>
         </ul>
         <div id="menu" class="items-center md:space-x-4 mr-[2%] text-2xl bg-yellow-900 md:bg-transparent md:text-lg absolute md:static top-16 md:flex w-[42%] md:w-auto rounded-tr-2xl rounded-br-2xl md:-translate-x-0" hidden>
@@ -79,10 +79,10 @@
         
         <div class="flex mr-[5%] items-center space-x-2">
             <div class="text-lg hover:underline cursor-pointer hidden md:inline-block">Sign in</div>
-            <div class="w-8 border-2 border-white rounded-full p-1 cursor-pointer"><img class="invert" src="/assets/login-76eae07b.svg" alt="Err"></div>
+            <div class="w-8 border-2 border-white rounded-full p-1 cursor-pointer"><img class="invert" src="assets/login-76eae07b.svg" alt="Err"></div>
         </div>
     </nav>
-    <img class="md:w-[100vw] md:h-[100vh] absolute top-0 -z-10 bg-no-repeat hidden md:block" id="bg" src="/assets/SnakeBackground-fbd888b7.jpg" alt="Error">
+    <img class="md:w-[100vw] md:h-[100vh] absolute top-0 -z-10 bg-no-repeat hidden md:block" id="bg" src="assets/SnakeBackground-fbd888b7.jpg" alt="Error">
 
     <div id="Scorebox" class="flex md:block md:absolute md:top-20 md:right-[1vw] xl:right-[4vw] md:text-1xl xl:text-2xl font-semibold md:space-y-4 space-x-6 md:space-x-0 text-lg w-max mx-auto mt-[5%] md:mt-[0%]">
         <div id="HighScore">HighScore: 0</div>
@@ -98,13 +98,13 @@
 
     <div class="buttons grid grid-cols-3 grid-rows-3 h-32 w-32 md:hidden mx-auto m-6">
         <div></div>
-        <div id="up" class="border-black bg-red-400 focus:bg-red-500 active:bg-red-600 border-2"><img class="w-full -rotate-90" src="/assets/arrow-266867b8.png" alt=""></div>
+        <div id="up" class="border-black bg-red-400 focus:bg-red-500 active:bg-red-600 border-2"><img class="w-full -rotate-90" src="assets/arrow-266867b8.png" alt=""></div>
         <div></div>
-        <div id="left" class="border-black bg-red-400 focus:bg-red-500 active:bg-red-600 border-2"><img class="w-full rotate-180" src="/assets/arrow-266867b8.png" alt=""></div>
+        <div id="left" class="border-black bg-red-400 focus:bg-red-500 active:bg-red-600 border-2"><img class="w-full rotate-180" src="assets/arrow-266867b8.png" alt=""></div>
         <div></div>
-        <div id="right" class="border-black bg-red-400 focus:bg-red-500 active:bg-red-600 border-2"><img class="w-full" src="/assets/arrow-266867b8.png" alt=""></div>
+        <div id="right" class="border-black bg-red-400 focus:bg-red-500 active:bg-red-600 border-2"><img class="w-full" src="assets/arrow-266867b8.png" alt=""></div>
         <div></div>
-        <div id="down" class="border-black bg-red-400 focus:bg-red-500 active:bg-red-600 border-2"><img class="w-full rotate-90" src="/assets/arrow-266867b8.png" alt=""></div>
+        <div id="down" class="border-black bg-red-400 focus:bg-red-500 active:bg-red-600 border-2"><img class="w-full rotate-90" src="assets/arrow-266867b8.png" alt=""></div>
         <div></div>
     </div>
 
@@ -127,10 +127,10 @@ function ToggleMenu(){
 
 // Game Constants & variables
 let inputDir = {x: 0, y: 0};
-const foodSound = new Audio("/assets/eating sound.mp3");
-const gameOverSound = new Audio("/assets/gameover.mp3");
-const moveSound = new Audio("/assets/blip.mp3");
-const backgroundSound = new Audio("/assets/background.mp3");
+const foodSound = new Audio("assets/eating sound.mp3");
+const gameOverSound = new Audio("assets/gameover.mp3");
+const moveSound = new Audio("assets/blip.mp3");
+const backgroundSound = new Audio("assets/background.mp3");
 backgroundSound.play();
 setInterval(()=>{
     backgroundSound.play();
